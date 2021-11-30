@@ -23,6 +23,10 @@ fun <T> Flowable<T>.resultSubscriber(
   return subscribe({
     onResult(Result.Success(it))
   }, {
-    onResult(Result.Error(Exception(it)))
+    onResult(Result.Error(it))
   })
 }
+
+fun composePosterImg(url: String) = "${ServiceConst.IMAGE_POSTER_URL}/$url"
+
+fun composeBackdropImg(url: String) = "${ServiceConst.IMAGE_BACKDROP_URL}/$url"

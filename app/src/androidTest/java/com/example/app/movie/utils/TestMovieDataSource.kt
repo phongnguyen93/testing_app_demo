@@ -1,24 +1,18 @@
-package com.example.app.movie.data.source.remote
+package com.example.app.movie.utils
 
 import com.example.app.movie.data.Movie
+import com.example.app.movie.data.MovieListResponse
 import com.example.app.movie.data.Result
 import com.example.app.movie.data.source.MovieDataSource
-import com.example.app.movie.util.uiSubscribe
 import io.reactivex.Completable
 import io.reactivex.Flowable
 
-class RemoteMovieDataSource constructor(
-  private val movieService: MovieService
-) : MovieDataSource {
+class TestMovieDataSource : MovieDataSource {
 
   override fun observeMovies(): Flowable<Result<List<Movie>>> {
-    return movieService.fetchMovies().uiSubscribe().flatMap({
-      Flowable.just(Result.Success(it.results))
-    }, {
-      Flowable.just(Result.Error(it))
-    }, {
-      Flowable.empty()
-    })
+    val parsedObject = parseJsonToObject(TestData.rawJson, MovieListResponse::class.java)
+    val testMovies = parsedObject.results
+    return Flowable.just(Result.Success(testMovies))
   }
 
   override fun observeFavoritedMovies(): Flowable<Result<List<Movie>>> {
@@ -26,13 +20,9 @@ class RemoteMovieDataSource constructor(
   }
 
   override fun observeMovie(movieId: Int): Flowable<Result<Movie>> {
-    return movieService.fetchMovieDetail(movieId).uiSubscribe().flatMap({
-      Flowable.just(Result.Success(it))
-    }, {
-      Flowable.just(Result.Error(it))
-    }, {
-      Flowable.empty()
-    })
+    val parsedObject = parseJsonToObject(TestData.rawJson, MovieListResponse::class.java)
+    val testMovie = parsedObject.results.find { it.id == movieId }
+    return Flowable.just(Result.Success(testMovie!!))
   }
 
 

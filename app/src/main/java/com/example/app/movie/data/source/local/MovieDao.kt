@@ -16,10 +16,7 @@
 
 package com.example.app.movie.data.source.local
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.app.movie.data.Movie
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -31,12 +28,20 @@ import io.reactivex.Flowable
 interface MovieDao {
 
   /**
-   * Observes list of favorite movies.
+   * Observes list of movies.
    *
    * @return all favorited movies.
    */
   @Query("SELECT * FROM Movies")
   fun observeMovies(): Flowable<List<Movie>>
+
+  /**
+   * Observes list of favorite movies.
+   *
+   * @return all favorited movies.
+   */
+  @Query("SELECT * FROM Movies WHERE favorited = 1")
+  fun observeFavoritedMovies(): Flowable<List<Movie>>
 
   /**
    * Observes a single movie.
@@ -54,6 +59,22 @@ interface MovieDao {
    */
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insertMovie(movie: Movie): Completable
+
+  /**
+   * Insert many movies in the database. If the movies already exists, replace it.
+   *
+   * @param movie the movie to be inserted.
+   */
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  fun insertMovies(movie: List<Movie>): Completable
+
+  /**
+   * Update a movie in the database
+   *
+   * @param movie the movie to be inserted.
+   */
+  @Update
+  fun updateMovie(movie: Movie): Completable
 
 
   /**

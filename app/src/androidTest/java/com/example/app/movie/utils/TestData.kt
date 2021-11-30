@@ -1,0 +1,7 @@
+package com.example.app.movie.utils
+
+object TestData {
+  const val testIndex = 0
+  const val rawJson =
+    """{"page":1,"results":[{"adult":false,"backdrop_path":"/cinER0ESG0eJ49kXlExM0MEWGxW.jpg","genre_ids":[28,12,14],"id":566525,"original_language":"en","original_title":"Shang-Chi and the Legend of the Ten Rings","overview":"Shang-Chi must confront the past he thought he left behind when he is drawn into the web of the mysterious Ten Rings organization.","popularity":5884.885,"poster_path":"/1BIoJGKbXjdFDAqUEiA2VHqkK1Z.jpg","release_date":"2021-09-01","title":"Shang-Chi and the Legend of the Ten Rings","video":false,"vote_average":7.9,"vote_count":3428},{"adult":false,"backdrop_path":"/z3TFGLBUBF8pLkSO6ohkhMe4tMt.jpg","genre_ids":[878,28,12],"id":580489,"original_language":"en","original_title":"Venom: Let There Be Carnage","overview":"After finding a host body in investigative reporter Eddie Brock, the alien symbiote must face a new enemy, Carnage, the alter ego of serial killer Cletus Kasady.","popularity":5797.863,"poster_path":"/rjkmN1dniUHVYAtwuV3Tji7FsDO.jpg","release_date":"2021-09-30","title":"Venom: Let There Be Carnage","video":false,"vote_average":7,"vote_count":2452}],"total_pages":500,"total_results":10000}"""
+}

@@ -2,6 +2,7 @@ package com.example.app.movie.data.source
 
 import com.example.app.movie.data.Movie
 import com.example.app.movie.data.Result
+import io.reactivex.Completable
 import io.reactivex.Flowable
 
 /**
@@ -15,7 +16,7 @@ interface MovieRepository {
 
   fun observeFavoriteMovies(): Flowable<Result<List<Movie>>>
 
-  fun addToFavorite(movie: Movie)
+  fun addToFavorite(movie: Movie): Completable
 
-  fun removeFromFavorite(movie: Movie)
+  fun removeFromFavorite(movie: Movie): Completable
 }

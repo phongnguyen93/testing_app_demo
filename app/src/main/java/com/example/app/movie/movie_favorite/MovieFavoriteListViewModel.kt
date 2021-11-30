@@ -1,4 +1,4 @@
-package com.example.app.movie.movie_list
+package com.example.app.movie.movie_favorite
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
@@ -13,7 +13,7 @@ import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 @HiltViewModel
-class MovieListViewModel @Inject constructor(
+class MovieFavoriteListViewModel @Inject constructor(
   private val movieRepository: MovieRepository
 ) : ViewModel() {
 
@@ -32,10 +32,10 @@ class MovieListViewModel @Inject constructor(
   }
 
   @SuppressLint("NullSafeMutableLiveData")
-  fun fetchMovies() {
+  fun fetchFavoritedMovies() {
     wrapAsyncEspressoIdlingResource { idlingResource ->
       idlingResource.increment()
-      val disp = movieRepository.observeMovies().subscribe({
+      val disp = movieRepository.observeFavoriteMovies().subscribe({
         if (it is Result.Success) {
           _loading.value = false
           _movies.value = it.data

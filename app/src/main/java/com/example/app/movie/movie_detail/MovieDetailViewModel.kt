@@ -1,4 +1,4 @@
-package com.example.app.movie.movie_list
+package com.example.app.movie.movie_detail
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
@@ -13,16 +13,16 @@ import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 @HiltViewModel
-class MovieListViewModel @Inject constructor(
+class MovieDetailViewModel @Inject constructor(
   private val movieRepository: MovieRepository
 ) : ViewModel() {
 
   private var compositeDisposable = CompositeDisposable()
 
-  private val _movies = MutableLiveData<List<Movie>>()
-  val movies: LiveData<List<Movie>> = _movies
+  private val _movie = MutableLiveData<Movie>()
+  val movie: LiveData<Movie> = _movie
 
-  private val _loading = MutableLiveData(true)
+  private val _loading = MutableLiveData<Boolean>()
   val loading: LiveData<Boolean> = _loading
 
   override fun onCleared() {
@@ -32,23 +32,37 @@ class MovieListViewModel @Inject constructor(
   }
 
   @SuppressLint("NullSafeMutableLiveData")
-  fun fetchMovies() {
-    wrapAsyncEspressoIdlingResource { idlingResource ->
-      idlingResource.increment()
-      val disp = movieRepository.observeMovies().subscribe({
+  fun fetchMovieDetail(id: Int) {
+    wrapAsyncEspressoIdlingResource { idlingRes ->
+      idlingRes.increment()
+      val disp = movieRepository.observeMovie(id).subscribe({
         if (it is Result.Success) {
           _loading.value = false
-          _movies.value = it.data
-          idlingResource.decrement()
+          _movie.value = it.data
+          idlingRes.decrement()
         }
       }, {
         _loading.value = false
-        idlingResource.decrement()
+        idlingRes.decrement()
       })
       compositeDisposable.add(disp)
     }
+  }
 
+  fun addToFav() {
+    _movie.value?.let {
+      movieRepository.addToFavorite(it).subscribe {
+        fetchMovieDetail(it.id)
+      }
+    }
+  }
 
+  fun removeFromFav() {
+    _movie.value?.let {
+      movieRepository.removeFromFavorite(it).subscribe {
+        fetchMovieDetail(it.id)
+      }
+    }
   }
 
 }

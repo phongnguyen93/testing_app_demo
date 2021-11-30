@@ -3,6 +3,7 @@ package com.example.app.movie.di
 import android.content.Context
 import androidx.room.Room
 import com.example.app.movie.data.source.DefaultMovieRepository
+import com.example.app.movie.data.source.MovieDataSource
 import com.example.app.movie.data.source.MovieRepository
 import com.example.app.movie.data.source.local.LocalMovieDataSource
 import com.example.app.movie.data.source.local.MovieDatabase
@@ -46,25 +47,27 @@ class AppModule {
   @Singleton
   @Provides
   fun provideMovieRepository(
-    remoteMovieDataSource: RemoteMovieDataSource,
-    localMovieDataSource: LocalMovieDataSource
+    @RemoteDataSource remoteMovieDataSource: MovieDataSource,
+    @LocalDataSource localMovieDataSource: MovieDataSource
   ): MovieRepository {
     return DefaultMovieRepository(localMovieDataSource, remoteMovieDataSource)
   }
 
+  @LocalDataSource
   @Singleton
   @Provides
   fun provideMovieLocalDataSource(
     database: MovieDatabase
-  ): LocalMovieDataSource {
+  ): MovieDataSource {
     return LocalMovieDataSource(database.movieDao())
   }
 
+  @RemoteDataSource
   @Singleton
   @Provides
   fun provideMovieRemoteDataSource(
     movieService: MovieService
-  ): RemoteMovieDataSource {
+  ): MovieDataSource {
     return RemoteMovieDataSource(movieService)
   }
 

@@ -11,6 +11,7 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import com.example.app.movie.HiltTestActivity
 import com.example.app.movie.R
+import com.google.gson.Gson
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -77,6 +78,9 @@ inline fun <reified T : Fragment> launchFragmentInHiltContainer(
   }
 }
 
+fun <T> parseJsonToObject(jsonString: String, className: Class<T>): T {
+  return Gson().fromJson<T>(jsonString, className)
+}
 
 
 
